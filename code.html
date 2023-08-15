@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/vs.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+
+    <!-- and it's easy to individually load additional languages -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/languages/go.min.js"></script>
+
+    <script>
+        hljs.highlightAll();
+    </script>
+    <div id="1" style="float: left; margin: 60px 30px; ">
+        <div id="整数二分">
+            <div class="code-box">
+              <div class="code-box-title">
+                整数二分
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    # 检查x是否满足某种性质
+    def check(x):
+        pass
+    
+    # 区间[l, r]被划分成[l, mid]和[mid + 1, r]时使用：
+    def binary_search_1(l, r):
+        while l < r:
+            mid = (l + r + 1) // 2
+            if check(mid):
+                l = mid
+            else:
+                r = mid - 1
+        return l
+    
+    # 区间[l, r]被划分成[l, mid - 1]和[mid, r]时使用：
+    def binary_search_2(l, r):
+        while l < r:
+            mid = (l + r) // 2
+            if check(mid):
+                r = mid
+            else:
+                l = mid + 1
+        return l</code>
+                </pre>
+              </div>
+    
+            </div>
+        </div>
+        <div style="margin-top: 36px" id="前缀和">
+            <div class="code-box">
+              <div class="code-box-title">
+                前缀和
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    # 前缀和定义
+    s[i] = a[1] + a[2] + ... a[i]
+    
+    # 求数组a的前缀和数组
+    s = list(accumulate(a, initial=0))
+    
+    # O(1)时间求a[l] + ... + a[r]
+    s[r] - s[l - 1]</code>
+                </pre>
+              </div>
+            </div>
+        </div>
+        <div style="margin-top: 36px" id="差分">
+            <div class="code-box">
+              <div class="code-box-title">
+                差分
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    # 一维差分预处理
+    for i in range(n, 0, -1):
+        S[i] -= S[i - 1]
+    
+    # 一维差分操作 给区间[l, r]中的每个数加上c
+    S[l] += c
+    S[r + 1] -= c
+    
+    # 一维前缀和恢复原数组
+    for i in range(1, n + 1):
+        S[i] += S[i - 1]</code>
+                </pre>
+              </div>
+            </div>
+        </div>
+        <div style="margin-top: 36px" id="队列">
+    </div>
+    
+        <div class="code-box">
+          <div class="code-box-title">
+            队列
+          </div>
+
+          <div class="code-box-content">
+            <pre style="margin: 0;">
+                <code class="language-python">
+    queue = deque(["Eric", "John", "Michael"])
+    queue.append("Terry")           # Terry 加入队列
+    queue.append("Graham")          # Graham 加入队列
+
+    print(queue.popleft())          # 第一个到达的现在出队
+    # 'Eric'
+
+    print(queue.popleft())          # 第二个到达的现在出队
+    # 'John'
+
+    print(queue)                    # 当前队列
+    # deque(['Michael', 'Terry', 'Graham'])</code>
+</pre>
+          </div>
+        </div>
+    </div>
+    <div id="2" style="float: left; margin: 60px 30px;">
+        <div id="优先队列">
+            <div class="code-box">
+              <div class="code-box-title">
+                优先队列
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    heap = [3,1,5,4]
+    heapify(heap)
+
+    # 默认小根堆
+    print(heappop(heap)) # 1
+
+    heappush(heapq, 2)
+
+    print(heappop(heap)) # 3
+
+    print(heappop(heap)) # 4</code>
+                </pre>
+              </div>
+    
+            </div>
+        </div>
+        <div style="margin-top: 36px" id="字符串哈希">
+            <div class="code-box">
+              <div class="code-box-title">
+                字符串哈希
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    class StringHash:
+        # 字符串哈希，用O(n)预处理，O(1)获取一段哈希值
+        def __init__(self, s):
+            n = len(s)
+            self.BASE = BASE = 131  # 进制 131
+            self.MOD = MOD = 2 ** 64
+            self.h = h = [0] * (n + 1)
+            self.p = p = [1] * (n + 1)
+            for i in range(1, n + 1):
+                p[i] = (p[i - 1] * BASE) % MOD
+                h[i] = (h[i - 1] * BASE % MOD + ord(s[i - 1])) \\
+                                                            % MOD
+        
+        # 用O(1)时间获取开区间[l,r)（即s[l:r]）的哈希值
+        def get_hash(self, l, r):
+            return (self.h[r] - self.h[l] * self.p[r - l] % \\
+                                    self.MOD) % self.MOD</code>
+                </pre>
+              </div>
+            </div>
+        </div>
+        <div style="margin-top: 36px" id="KMP">
+            <div class="code-box">
+              <div class="code-box-title">
+                KMP
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    # 求模式串的Next数组
+    def get_next(p):
+        m = len(p)
+        j = 0
+        next = [0] * m
+        for i in range(1, m):
+            while j and p[i] != p[j]:
+                j = next[j - 1]
+            if p[i] == p[j]:
+                j += 1
+            next[i] = j
+        return next
+    
+    # 匹配
+    n, m = len(s), len(p)
+    if m == 0:
+        return 0
+    next = get_next(p)
+    j = 0
+    for i in range(n):
+        while j and s[i] != p[j]:
+            j = next[j - 1]
+        if s[i] == p[j]:
+            j += 1
+        if j == m:
+            j = next[j] # 匹配成功 位置为 i - m + 1</code>
+                </pre>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="3" style="float: left; margin: 60px 30px;">
+        <div id="并查集">
+            <div class="code-box">
+              <div class="code-box-title">
+                并查集
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    def find(x):
+        if f[x] != x:
+            f[x] = find(f[x])
+        return f[x]
+    
+    f[find(a)] = find(b) # 将二者的根结点相连</code>
+                </pre>
+              </div>
+    
+            </div>
+        </div>
+        <div style="margin-top: 880px" id="Floyd">
+            <div class="code-box">
+              <div class="code-box-title">
+                Floyd
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    def Floyd(graph):
+        n = len(graph)
+        # 初始化距离矩阵
+        dist = [[float('inf') for _ in range(n)] \\
+                                    for _ in range(n)]
+        # 将图中的边的权值赋值给距离矩阵
+        for i in range(n):
+            for j in range(n):
+                dist[i][j] = graph[i][j]
+        # Floyd算法
+        for k in range(n):
+            for i in range(n):
+                for j in range(n):
+                    dist[i][j] = min(dist[i][j], dist[i][k] \\
+                                                + dist[k][j])
+        return dist</code>
+                </pre>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="4" style="float: left; margin: 60px 50px; margin-bottom: 0 !important;">
+        <div id="欧几里得算法">
+            <div class="code-box">
+              <div class="code-box-title">
+                欧几里得算法
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    def gcd(a, b):
+        # 递归求a,b的最大公约数 
+        return a if b == 0 else gcd(b, a % b)</code>
+                </pre>
+              </div>
+    
+            </div>
+        </div>
+        <div style="margin-top: 930px" id="归并排序">
+            <div class="code-box">
+              <div class="code-box-title">
+                归并排序
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    def merge_sort(arr,left,right):       
+        if left == right:        
+            return
+        # 将较大的区间[left,right]一分为二
+        mid=(left + right) >> 1          
+        merge_sort(arr, left, mid)
+        merge_sort(arr, mid+1, right)
+        i, j=left, mid+1   # i,j分别记录两个区间的起点
+        tmp = []           # tmp记录[left,right]的排序结果
+        while i <= mid or j <= right:
+            if i > mid or (j <= right and arr[i] > arr[j]):
+                tmp.append(arr[j])
+                j += 1    
+            else:
+                tmp.append(arr[i])
+                i += 1
+        arr[left:right + 1]=tmp[:]  # tmp的记录结果传回arr 
+    merge_sort(arr, 0, len(arr) - 1)</code>
+                </pre>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="5" style="float: left; margin: 60px 30px; margin-bottom: 0 !important;">
+        <div id="字典树/Tire树">
+            <div class="code-box">
+              <div class="code-box-title">
+                字典树/Tire树
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    class Trie:
+        def __init__(self):
+            self.children = [None] * 26
+            self.isEnd = False
+        
+        # 判断是否存在以'prefix'为前缀的单词
+        def searchPrefix(self, prefix: str) -> "Trie":
+            node = self
+            for ch in prefix:
+                ch = ord(ch) - ord("a")
+                if not node.children[ch]:
+                    return None
+                node = node.children[ch]
+            return node
+        
+        # 插入单词
+        def insert(self, word: str) -> None:
+            node = self
+            for ch in word:
+                ch = ord(ch) - ord("a")
+                if not node.children[ch]:
+                    node.children[ch] = Trie()
+                node = node.children[ch]
+            node.isEnd = True</code>
+                </pre>
+              </div>
+    
+            </div>
+        </div>
+        <div style="margin-top: 36px" id="DFS">
+            <div class="code-box">
+              <div class="code-box-title">
+                DFS
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    def dfs(graph, s, visited, onpath):
+        # visited记录被遍历过的节点
+        # onpath记录从起点到当前节点的路径
+        if visited[s]:
+            return
+        # 经过节点s 标记为已遍历
+        visited[s] = True
+        # 做选择 标记节点s在路径上
+        onPath[s] = True
+        for neighbor in neighbors:
+            dfs(graph, neighbor, visited, onpath)
+        # 撤销选择 节点s离开路径
+        onpath[s] = False</code>
+                </pre>
+              </div>
+            </div>
+        </div>
+        <div style="margin-top: 36px" id="BFS">
+            <div class="code-box">
+              <div class="code-box-title">
+                BFS
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    def bfs(v):
+        v.visited = True
+        queue = []  # 初始化一个空队列
+        queue.append(v)  # v 入队
+        while queue:
+            for w in v.neighbours:
+                if not w.visited:
+                    w.visited = True
+                    queue.append(w)
+            queue.pop(0)  # v 出队</code>
+                </pre>
+              </div>
+            </div>
+        </div>
+        <div style="margin-top: 36px" id="判定质数">
+            <div class="code-box">
+              <div class="code-box-title">
+                判定质数
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    def isPrime(x):
+        if x < 2:
+            return False
+        # 从2到sqrt(x)判断是否有因子
+        n = int(sqrt(x))
+        for i in range(2, n + 1):
+            if x % i == 0:
+                return False
+        return True</code>
+                </pre>
+              </div>
+            </div>
+        </div>
+    </div>
+    <div id="6" style="float: left; margin: 60px 30px;">
+        <div id="堆优化Dijkstra">
+            <div class="code-box">
+              <div class="code-box-title">
+                堆优化Dijkstra
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    # Dijkstra + 堆优化
+    def Dijkstra_heap(graph, s):
+        n = len(graph)
+        # 初始化距离矩阵
+        dist = [float('inf') for _ in range(n)]
+        # 初始化标记数组
+        vis = [False for _ in range(n)]
+        # 将源点的距离设为0
+        dist[s] = 0
+        # 初始化堆
+        heap = []
+        heappush(heap, (0, s))
+        # Dijkstra算法
+        while heap:
+            # 找到距离最小的点
+            d, u = heappop(heap)
+            # 如果该点已经标记过，跳过
+            if vis[u]:
+                continue
+            # 标记该点
+            vis[u] = True
+            # 更新距离
+            for v in range(n):
+                if dist[v] > dist[u] + graph[u][v]:
+                    dist[v] = dist[u] + graph[u][v]
+                    heappush(heap, (dist[v], v))
+        return dist</code>
+                </pre>
+              </div>
+    
+            </div>
+        </div>
+        <div style="margin-top: 36px" id="拓扑排序">
+            <div class="code-box">
+              <div class="code-box-title">
+                拓扑排序
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    def topologicalSort(self,items,indegree,neighbors):
+        queue = deque()
+        res = []
+        
+        # 将入度为0的节点加入队列
+        for item in items:
+            if indegree[item]==0:
+                queue.append(item)
+        
+        # 每次从队列中取出一个节点，将其邻接节点的入度减1
+        while queue:
+            cur = queue.popleft()
+            res.append(cur)
+
+            for neighbor in neighbors[cur]:
+                indegree[neighbor] -= 1
+                if indegree[neighbor] == 0:
+                    queue.append(neighbor)
+                    
+        return res</code>
+                </pre>
+              </div>
+            </div>
+        </div>
+        <div style="margin-top: 36px" id="线性筛求质数">
+            <div class="code-box">
+              <div class="code-box-title">
+                线性筛求质数
+              </div>
+    
+              <div class="code-box-content">
+                <pre style="margin: 0;">
+                    <code class="language-python">
+    def getPrime(n):
+        # isPrime[i] = True 表示i是质数
+        isPrime = [True for _ in range(n + 1)]
+        isPrime[0] = isPrime[1] = False
+        # 存储所有质数
+        primes = []
+        for i in range(2, n + 1):
+            if isPrime[i]:
+                primes.append(i)
+            for prime in primes:
+                if i * prime > n:
+                    break
+                isPrime[i * prime] = False
+                if i % prime == 0:
+                    break</code>
+                </pre>
+              </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+
+<style>
+    body {
+        background-image: url("bg.jpg");
+    }
+
+    .code-box {
+        width: 530px;
+    }
+
+    .code-box-title {
+        font-size: 18px;
+        font-weight: 600;
+        border-radius: 8px;
+        background-color: rgba(235, 111, 135, 0.9);
+        color: #fff;
+        height: 36px;
+        line-height: 36px;
+        text-align: center;
+    }
+
+    .code-box-content {
+        text-align: left;
+        font-size: 15px;
+        margin-top: 8px;
+        border-radius: 8px;
+        background-color: rgba(200, 201, 205, 0.3);
+        padding: 0 18px;
+    }
+
+    .language-python {
+        background-color: unset !important;
+        padding: 0 !important;
+    }
+</style>
+
+</html>
